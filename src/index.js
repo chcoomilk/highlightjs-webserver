@@ -8,21 +8,22 @@ const highlight_js_1 = __importDefault(require("highlight.js"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("@fastify/cors"));
 dotenv_1.default.config();
-const server = (0, fastify_1.default)();
-server.register(cors_1.default);
+const server = (0, fastify_1.default)().register(cors_1.default);
 server.post("/", {
     preValidation: (req, _, done) => {
-        const { code } = req.body;
-        done(!(code && code.trim())
-            ? new Error("body of code can't be empty; expect({ code: String })")
+        const { data } = req.body;
+        done(!(data && data.trim() && typeof data == "string")
+            ? new Error("body of code was invalid; expecting \"{ data: String })\"")
             : undefined);
     },
 }, async (req, rep) => {
-    const { code } = req.body;
-    const data = highlight_js_1.default.highlightAuto(code);
-    rep.status(201).send({ value: data.value });
+    const { data } = req.body;
+    const result = highlight_js_1.default.highlightAuto(data);
+    result.illegal
+        ? rep.status(200).send({ data, msg: "data was illegal, returned previous data" })
+        : rep.status(200).send({ data: result.value });
 });
-server.listen({ port: Number(process.env.PORT) || 0 }, (err, address) => {
+server.listen({ host: process.env.HOST || "localhost", port: Number(process.env.PORT) || 0 }, (err, address) => {
     if (err) {
         console.error(err);
         process.exit(1);

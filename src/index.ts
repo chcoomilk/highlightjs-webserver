@@ -7,7 +7,7 @@ dotenv.config();
 const server = fastify().register(cors);
 
 type Body = {
-    code: string
+    data: string
 }
 
 server.post<{
@@ -16,20 +16,22 @@ server.post<{
     "/",
     {
         preValidation: (req, _, done) => {
-            const { code } = req.body;
+            const { data } = req.body;
             done(
-                !(code && code.trim())
-                    ? new Error("body of code can't be empty; expect({ code: String })")
+                !(data && data.trim() && typeof data == "string")
+                    ? new Error("body of code was invalid; expecting \"{ data: String })\"")
                     : undefined
             );
         },
     }, async (req, rep) => {
-        const { code } = req.body;
-        const data = hljs.highlightAuto(code);
-        rep.status(200).send({ value: data.value });
+        const { data } = req.body;
+        const result = hljs.highlightAuto(data);
+        result.illegal
+            ? rep.status(200).send({ data, msg: "data was illegal, returned previous data" })
+            : rep.status(200).send({ data: result.value });
     });
 
-server.listen({ host: process.env.HOST, port: Number(process.env.PORT) || 0 }, (err, address) => {
+server.listen({ host: process.env.HOST || "localhost", port: Number(process.env.PORT) || 0 }, (err, address) => {
     if (err) {
         console.error(err);
         process.exit(1);
