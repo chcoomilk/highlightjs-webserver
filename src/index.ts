@@ -29,7 +29,7 @@ server.post<{
         rep.status(200).send({ value: data.value });
     });
 
-server.listen({ port: Number(process.env.PORT) || 0 }, (err, address) => {
+server.listen({ host: process.env.HOST, port: Number(process.env.PORT) || 0 }, (err, address) => {
     if (err) {
         console.error(err);
         process.exit(1);
