@@ -1,0 +1,31 @@
+{
+  "name": "highlightjs-webserver",
+  "version": "1.0.0",
+  "description": "a dead simple highlightjs web server to automatically highlight string into parseable html for your front end app",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "tsc -p tsconfig.json && node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chcoomilk/highlightjs-webserver.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chcoomilk/highlightjs-webserver/issues"
+  },
+  "homepage": "https://github.com/chcoomilk/highlightjs-webserver#readme",
+  "dependencies": {
+    "@fastify/cors": "^8.2.0",
+    "dotenv": "^16.0.3",
+    "fastify": "^4.10.2",
+    "highlight.js": "^11.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "typescript": "^4.9.4"
+  }
+}
