@@ -21,7 +21,7 @@
   "dependencies": {
     "@fastify/cors": "^8.2.0",
     "dotenv": "^16.0.3",
-    "fastify": "^4.10.2",
+    "fastify": "^4.28.1",
     "highlight.js": "^11.7.0"
   },
   "devDependencies": {
